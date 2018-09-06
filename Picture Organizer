@@ -1,0 +1,58 @@
+from PIL import Image
+from PIL.ExifTags import TAGS
+import os
+srcdir = 'C:/Users/joeco/Pictures'
+fldrs = os.listdir(srcdir)
+#########Define the process to extract pic metadata ##
+def get_exif_data(fname):
+     ret = {}
+     try:
+         img = Image.open(fname)
+         if hasattr( img, '_getexif' ):
+              exifinfo = img._getexif()
+              if exifinfo != None:
+                   #print(exifinfo)
+                   for tag, value in exifinfo.items():
+                        decoded = TAGS.get(tag, tag)
+                        ret[decoded] = value
+     except IOError:
+          print('IOERROR ' + fname)
+     return ret
+fname = srcdir + '/2018-07/DSC_0846.JPG'
+stuff = get_exif_data(fname)
+#stuff
+stuff.keys()
+stuff['Make']
+stuff['Model']
+stuff['GPSInfo']
+fname = ''
+stuff['DateTimeOriginal']
+stuff['DateTimeDigitized']
+for fldr in fldrs:
+     if fldr.rfind('.') < 0:
+          pics = os.listdir(srcdir + '/' + fldr)
+          count = 1
+          for pic in pics:
+               if pic.upper().rfind('.JPG') >= 0:
+                    fname = srcdir + '/' + fldr + '/' + pic
+                    if count <= 2:
+                         all_attrs = get_exif_data(fname)
+                         try:
+                              dto = all_attrs['DateTimeOriginal']
+                              dtd = all_attrs['DateTimeDigitized']
+                              print(dto, dtd)
+                         except:
+                              print(fname)
+                    count = count + 1
+temp_name = 'C:/Users/joeco/Pictures/2018-07/AVTD2144.JPG'
+temp_name = 'C:/Users/joeco/Pictures/2018-08-02 All iCourt/APXH3371.JPG'
+temp_name = 'C:/Users/joeco/Pictures/2018-08-02 All iCourt/ATHA8589.JPG'
+temp_attrs = get_exif_data(temp_name)
+temp_attrs.keys()
+temp_attrs['GPSInfo']
+info = os.stat(temp_name)
+print(info)
+print(info.st_ctime)
+import datetime
+serial = info.st_ctime
+datetime.datetime.utcfromtimestamp(serial)
