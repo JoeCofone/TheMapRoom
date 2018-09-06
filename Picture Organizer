@@ -18,16 +18,7 @@ def get_exif_data(fname):
      except IOError:
           print('IOERROR ' + fname)
      return ret
-fname = srcdir + '/2018-07/DSC_0846.JPG'
-stuff = get_exif_data(fname)
-#stuff
-stuff.keys()
-stuff['Make']
-stuff['Model']
-stuff['GPSInfo']
 fname = ''
-stuff['DateTimeOriginal']
-stuff['DateTimeDigitized']
 for fldr in fldrs:
      if fldr.rfind('.') < 0:
           pics = os.listdir(srcdir + '/' + fldr)
@@ -46,13 +37,10 @@ for fldr in fldrs:
                     count = count + 1
 temp_name = 'C:/Users/joeco/Pictures/2018-07/AVTD2144.JPG'
 temp_name = 'C:/Users/joeco/Pictures/2018-08-02 All iCourt/APXH3371.JPG'
-temp_name = 'C:/Users/joeco/Pictures/2018-08-02 All iCourt/ATHA8589.JPG'
 temp_attrs = get_exif_data(temp_name)
 temp_attrs.keys()
 temp_attrs['GPSInfo']
 info = os.stat(temp_name)
-print(info)
-print(info.st_ctime)
 import datetime
 serial = info.st_ctime
 datetime.datetime.utcfromtimestamp(serial)
